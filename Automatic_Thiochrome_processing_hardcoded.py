@@ -40,7 +40,9 @@ wells_pythonic=[r + c   for c in cols for r in rows]
     #put data into a pandas DataFrame
 wells_pythonic=pd.DataFrame(wells_pythonic)
     #Rename Column 
-wells_pythonic.rename(columns={0:'Well_Number'}, inplace=True)
+wells_pythonic.rename(columns={0:'Well_Number'}, 
+                    inplace=True
+                    )
 
 
 
@@ -63,7 +65,9 @@ TCH_settings['Sample_Type']=np.where((TCH_settings.index < 71), sample_type[0],
                                  np.where((TCH_settings.index < 93), sample_type[1], sample_type[2]))
 
     #Add Standard Concentration info
-TCH_settings=TCH_settings.merge(std_wells, how='outer', on="Well_Number")
+TCH_settings=TCH_settings.merge(std_wells, 
+                                how='outer', 
+                                on="Well_Number")
 
 df_compiled=pd.concat([TCH_settings, TC_list], 
                    axis=1).set_axis(
@@ -106,11 +110,10 @@ Molar_mass_thi=265.33
 #Global dilution (if present)
 global_dil=1
 
-df_normalized ["Results_mg/L"] =global_dil* df_normalized["Results_uM"]*Molar_mass_thi/1000
+df_normalized ["Results_mg/L"] =global_dil * df_normalized["Results_uM"]*Molar_mass_thi/1000
 
 
-#%% Spit file 
-#Put 
+#%% Put data back to a 96 format
 final_results_list=list(df_normalized ["Results_mg/L"])
 
 final_df_96=pd.DataFrame(rows)
@@ -120,6 +123,30 @@ for x in range(0,12):
     final_df_96[str(x+1)]=final_results_list[x*8:x*8+8]
 
 
-#Spit values in 96 format
-#Get
-print("potato")
+#Spitting values back to Excel 
+    #Define conditions (MOCK dataframes):
+final_df_96_1=final_df_96.copy()
+final_df_96_1["1"]=1
+
+final_df_96_2=final_df_96.copy()
+final_df_96_2["2"]=2
+
+final_df_96_3=final_df_96.copy()
+final_df_96_3["3"]=3
+    #Define conditions (MOCK Plate Names):
+plate_names=["THC mg/L - Plate A", "THC mg/L - Plate B", "THC mg/L - Plate C"]
+#Having a list containing dataframes we're gonna loop: list_lists
+
+    #convert df into list of lists
+final_df_96_dict1=final_df_96_1.values.tolist()
+final_df_96_dict2=final_df_96_2.values.tolist()
+final_df_96_dict3=final_df_96_3.values.tolist()
+
+#INPUT
+row1=["Something"," "," "," "," "," "," "," "," "," "," "," ", " "]
+row2=[' ', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']
+list_lists=[final_df_96_dict1, final_df_96_dict2, final_df_96_dict3]
+
+
+#LOOPING to create dataframe
+print("I think this will work")
